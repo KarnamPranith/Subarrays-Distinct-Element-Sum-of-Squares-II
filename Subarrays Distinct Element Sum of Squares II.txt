@@ -1,0 +1,40 @@
+from typing import List
+
+class Solution:
+    def sumCounts(self, nums: List[int]) -> int:
+        MOD = 10**9 + 7
+        n = len(nums)
+        size = 4 * n
+
+        sum1 = [0] * size
+        sum2 = [0] * size
+        lazy = [0] * size
+        last = {}
+        ans = 0
+
+        def push(node, l, r):
+            if lazy[node] == 0:
+                return
+
+            v = lazy[node]
+            mid = (l + r) // 2
+
+            for child, length in (
+                (node * 2, mid - l + 1),
+        …     if ql <= mid:
+                update(node * 2, l, mid, ql, qr)
+            if qr > mid:
+                update(node * 2 + 1, mid + 1, r, ql, qr)
+
+            sum1[node] = (sum1[node * 2] + sum1[node * 2 + 1]) % MOD
+            sum2[node] = (sum2[node * 2] + sum2[node * 2 + 1]) % MOD
+
+        for i, x in enumerate(nums):
+            prev = last.get(x, -1)
+            update(1, 0, n - 1, prev + 1, i)
+            ans = (ans + sum2[1]) % MOD
+            last[x] = i
+
+        return ans
+
+        
